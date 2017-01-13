@@ -1,0 +1,37 @@
+---
+- stat: path=/srv/{{version}}
+  register: hadoop_installed
+
+- name: download and unzip Hadoop binary
+  unarchive:
+    src: "{{bin_url}}"
+    dest: /srv
+    remote_src: yes
+    owner: ubuntu
+    group: ubuntu
+  when: hadoop_installed.stat.exists == False
+
+- name: change permission
+  file:
+    dest: /srv/{{version}}
+    owner: ubuntu
+    group: ubuntu
+    state: directory
+    recurse: yes
+
+- name: update JAVA_HOME
+  replace:
+    dest: /srv/{{version}}/etc/hadoop/hadoop-env.sh
+    regexp: "(# )?export JAVA_HOME=(.*)"
+    replace: "export JAVA_HOME=$(readlink -f $(which java) | sed 's|/bin/java||g')"
+ 
+- name: create symlink to actual folder
+  file:
+    src: /srv/{{version}}
+    dest: "{{hadoop_home}}"
+    state: link
+
+- name: set home in shell env
+  copy:
+    dest: /etc/profile.d/hadoop-home.sh
+    content: export HADOOP_HOME={{hadoop_home}}

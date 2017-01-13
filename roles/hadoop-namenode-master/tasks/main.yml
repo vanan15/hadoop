@@ -1,0 +1,15 @@
+---
+- name: check if hdfs formated
+  stat: path={{hdfs_dir}}/current
+  register: hdfs_formated
+
+- name: format hdfs
+  shell: "{{hadoop_home}}/bin/hdfs namenode -format {{cluster_name}}"
+  when: hdfs_formated.stat.exists == False
+  become: yes
+  become_user: ubuntu
+  
+- name: start name node master
+  shell: "pidof java || {{hadoop_home}}/bin/hdfs --daemon start namenode"
+  become: yes
+  become_user: ubuntu

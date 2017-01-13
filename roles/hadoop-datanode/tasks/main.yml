@@ -1,0 +1,5 @@
+---
+- name: start data node master
+  shell: "pidof java || {{hadoop_home}}/bin/hdfs --daemon start datanode"
+  become: yes
+  become_user: ubuntu

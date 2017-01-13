@@ -1,0 +1,23 @@
+---
+- name: create data dir for hdfs
+  file:
+    dest: "{{hdfs_dir}}"
+    owner: ubuntu
+    group: ubuntu
+    state: directory
+
+- name: load SSH private key
+  copy:
+    src: /home/ubuntu/.ssh/anaws0-oregon
+    dest: /home/ubuntu/.ssh/id_rsa
+    mode: 0400
+    owner: ubuntu
+    group: ubuntu
+
+- name: put common site config
+  template:
+    src: "{{item}}.j2"
+    dest: "{{hadoop_home}}/{{item}}"
+  with_items:
+    - etc/hadoop/core-site.xml
+    - etc/hadoop/hdfs-site.xml

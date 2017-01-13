@@ -1,0 +1,24 @@
+---
+cluster_name: myhadoop
+version: hadoop-3.0.0-alpha1
+bin_url: http://www-us.apache.org/dist/hadoop/common/{{version}}/{{version}}.tar.gz
+hadoop_home: /srv/hadoop
+hdfs_dir: /srv/hdfs
+
+core_site:
+  - { k: "fs.defaultFS",               v: "hdfs://{{groups['tag_Name_hdfs_namenode'][0]}}:9000" }
+  - { k: "io.file.buffer.size",        v: "131072" }
+
+hdfs_site:
+  - { k: "dfs.namenode.name.dir",      v: "{{hdfs_dir}}" }
+  - { k: "dfs.blocksize",              v: "268435456" }
+  - { k: "dfs.namenode.handler.count", v: "100" }
+  - { k: "dfs.datanode.data.dir",      v: "{{hdfs_dir}}" }
+
+yarn_site:
+  - { k: "yarn.acl.enable", v: "false" }
+  - { k: "yarn.admin.acl", v: "*" }
+  - { k: "yarn.log-aggregation-enable", v: "false" }
+  - { k: "1", v: "" }
+  - { k: "2", v: "" }
+
