@@ -21,4 +21,14 @@
     - openjdk-etc
     - hadoop-base
     - hadoop-config
+
+- name: install and config hadoop
+  hosts: "tag_Service_hadoop:&tag_Role_hdfs_namenode"
+  remote_user: ubuntu
+  become: no
+
+  vars_files:
+    - vars/common.yml
+
+  roles:
     - hadoop-namenode-master

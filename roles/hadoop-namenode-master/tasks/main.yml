@@ -6,10 +6,14 @@
 - name: format hdfs
   shell: "{{hadoop_home}}/bin/hdfs namenode -format {{cluster_name}}"
   when: hdfs_formated.stat.exists == False
-  become: yes
-  become_user: ubuntu
+  become: no
+  args:
+    chdir: "{{hadoop_home}}"
+    executable: /bin/bash
   
 - name: start name node master
-  shell: "pidof java || {{hadoop_home}}/bin/hdfs --daemon start namenode"
-  become: yes
-  become_user: ubuntu
+  shell: "pidof java || (nohup {{hadoop_home}}/bin/hdfs --daemon start namenode &)"
+  become: no
+  args:
+    chdir: "{{hadoop_home}}"
+    executable: /bin/bash
