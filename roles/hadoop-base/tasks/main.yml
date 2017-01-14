@@ -11,14 +11,6 @@
     group: ubuntu
   when: hadoop_installed.stat.exists == False
 
-- name: change permission
-  file:
-    dest: /srv/{{version}}
-    owner: ubuntu
-    group: ubuntu
-    state: directory
-    recurse: yes
-
 - name: update JAVA_HOME
   replace:
     dest: /srv/{{version}}/etc/hadoop/hadoop-env.sh
