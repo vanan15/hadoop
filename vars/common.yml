@@ -4,6 +4,7 @@ version: hadoop-3.0.0-alpha1
 bin_url: http://www-us.apache.org/dist/hadoop/common/{{version}}/{{version}}.tar.gz
 hadoop_home: /srv/hadoop
 hdfs_dir: /srv/hdfs
+datanodes: "{{groups['tag_Name_hdfs_datanode']|default([])}}"
 
 core_site:
   - { k: "fs.defaultFS",               v: "hdfs://{{groups['tag_Name_hdfs_namenode'][0]}}:9000" }

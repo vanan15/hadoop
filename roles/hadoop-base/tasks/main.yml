@@ -35,3 +35,8 @@
   copy:
     dest: /etc/profile.d/hadoop-home.sh
     content: export HADOOP_HOME={{hadoop_home}}
+
+- name: set ssh for pdsh
+  copy:
+    dest: /etc/pdsh/rcmd_default
+    content: ssh
